@@ -1,90 +1,121 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const pairs = {
-  Innovation: "Propose new ideas",
-  Collaboration: "Work with team members",
-  Growth: "Learn new skills",
-};
-
 export default function MatchGame({ onComplete }) {
-  const [selected, setSelected] = useState(null);
-  const [matched, setMatched] = useState({});
+  const leftItems = ["Innovation", "Collaboration", "Growth"];
+  const rightItems = [
+    "Propose new ideas",
+    "Work with team members",
+    "Learn new skills",
+  ];
+
+  const correctMatch = {
+    Innovation: "Propose new ideas",
+    Collaboration: "Work with team members",
+    Growth: "Learn new skills",
+  };
+
+  const [selectedLeft, setSelectedLeft] = useState(null);
+  const [matches, setMatches] = useState({});
   const [xp, setXp] = useState(0);
 
-  const values = Object.keys(pairs);
-  const actions = Object.values(pairs);
+  // ✅ LEFT CLICK
+  const handleLeftClick = (item) => {
+    if (matches[item]) return; // already matched
+    setSelectedLeft(item);
+  };
 
-  const handleClick = (item, type) => {
-    if (!selected) {
-      setSelected({ item, type });
-      return;
-    }
+  // ✅ RIGHT CLICK
+  const handleRightClick = (item) => {
+    if (!selectedLeft) return;
 
-    // Match logic
-    if (
-      (selected.type === "value" &&
-        pairs[selected.item] === item) ||
-      (selected.type === "action" &&
-        pairs[item] === selected.item)
-    ) {
-      setMatched((prev) => ({ ...prev, [selected.item]: true }));
+    // correct match
+    if (correctMatch[selectedLeft] === item) {
+      setMatches((prev) => ({
+        ...prev,
+        [selectedLeft]: item,
+      }));
+
       setXp((prev) => prev + 20);
     }
 
-    setSelected(null);
+    setSelectedLeft(null);
   };
 
-  // Completion check
-  if (Object.keys(matched).length === values.length) {
-    setTimeout(() => onComplete(xp), 1000);
-  }
+  // ✅ COMPLETE CHECK
+  const isComplete = Object.keys(matches).length === 3;
 
   return (
-    <div className="mt-10 text-center">
+    <div className="text-white text-center mt-10">
 
-      <h2 className="text-2xl text-cyan-400 mb-6">
-        Match Company Values
-      </h2>
+      <h1 className="text-3xl mb-6 text-cyan-400 drop-shadow-[0_0_10px_#00f5ff]">
+        Value Alignment Mission
+      </h1>
 
-      <div className="grid grid-cols-2 gap-6 max-w-3xl mx-auto">
+      <p className="mb-6 text-gray-300">Match Company Values</p>
 
-        {/* Values */}
+      <div className="flex justify-center gap-10">
+
+        {/* LEFT SIDE */}
         <div className="space-y-4">
-          {values.map((val) => (
-            <motion.div
-              key={val}
-              whileHover={{ scale: 1.05 }}
-              onClick={() => handleClick(val, "value")}
-              className={`p-4 border rounded-lg cursor-pointer ${
-                matched[val]
-                  ? "border-green-400"
-                  : "border-cyan-400"
-              }`}
-            >
-              {val}
-            </motion.div>
-          ))}
+          {leftItems.map((item) => {
+            const isMatched = matches[item];
+
+            return (
+              <motion.div
+                key={item}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleLeftClick(item)}
+                className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                  isMatched
+                    ? "border-green-400 bg-green-900/30 shadow-[0_0_12px_#22c55e]"
+                    : selectedLeft === item
+                    ? "border-yellow-400"
+                    : "border-cyan-400"
+                }`}
+              >
+                {item}
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Actions */}
+        {/* RIGHT SIDE */}
         <div className="space-y-4">
-          {actions.map((act) => (
-            <motion.div
-              key={act}
-              whileHover={{ scale: 1.05 }}
-              onClick={() => handleClick(act, "action")}
-              className="p-4 border border-purple-400 rounded-lg cursor-pointer"
-            >
-              {act}
-            </motion.div>
-          ))}
+          {rightItems.map((item) => {
+            const isMatched = Object.values(matches).includes(item);
+
+            return (
+              <motion.div
+                key={item}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleRightClick(item)}
+                className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                  isMatched
+                    ? "border-green-400 bg-green-900/30 shadow-[0_0_12px_#22c55e]"
+                    : "border-purple-400"
+                }`}
+              >
+                {item}
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>
 
+      {/* XP */}
       <p className="mt-6 text-cyan-400">XP: {xp}</p>
 
+      {/* COMPLETE BUTTON */}
+      {isComplete && (
+        <button
+          onClick={() => onComplete(xp)}
+          className="mt-6 px-6 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 hover:scale-105 transition"
+        >
+          Continue →
+        </button>
+      )}
     </div>
   );
 }

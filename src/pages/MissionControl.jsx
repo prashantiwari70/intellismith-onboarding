@@ -17,7 +17,7 @@ export default function MissionControl({
     <div className="min-h-screen p-6 text-white">
 
       {/* Title */}
-      <h1 className="text-center text-4xl text-neon mb-6 drop-shadow-[0_0_10px_#00f5ff]">
+      <h1 className="text-center text-4xl text-cyan-400 mb-6 drop-shadow-[0_0_10px_#00f5ff]">
         MISSION CONTROL
       </h1>
 
@@ -28,7 +28,7 @@ export default function MissionControl({
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-gray-800 rounded-full h-3 mb-8">
+      <div className="w-full max-w-xl mx-auto bg-gray-800 rounded-full h-3 mb-8">
         <div
           className="bg-cyan-400 h-3 rounded-full transition-all duration-500"
           style={{ width: `${Math.min((xp / 200) * 100, 100)}%` }}
@@ -38,7 +38,14 @@ export default function MissionControl({
       {/* Levels */}
       <div className="space-y-4 max-w-2xl mx-auto">
         {levels.map((lvl) => {
+          // ✅ Unlock logic
           const isUnlocked = unlockedLevels.includes(lvl.id);
+
+          // ✅ Correct completion logic (VERY IMPORTANT FIX)
+          const isCompleted =
+  lvl.id === 4
+    ? unlockedLevels.includes(4) && xp >= 200
+    : unlockedLevels.includes(lvl.id + 1);
 
           return (
             <motion.div
@@ -46,20 +53,24 @@ export default function MissionControl({
               whileHover={{ scale: isUnlocked ? 1.05 : 1 }}
               onClick={() => isUnlocked && onLevelSelect(lvl.id)}
               className={`p-5 rounded-xl border transition-all duration-300 ${
-  isUnlocked
-    ? "border-cyan-400 cursor-pointer hover:shadow-[0_0_20px_#00f5ff] hover:scale-[1.02]"
-    : "border-gray-700 opacity-50"
-}`}
+                isUnlocked
+                  ? "border-cyan-400 hover:shadow-lg hover:shadow-cyan-400/50 cursor-pointer"
+                  : "border-gray-600 opacity-50 cursor-not-allowed"
+              }`}
             >
+              {/* Title */}
               <h2 className="text-xl">
                 Level {lvl.id}: {lvl.title}
               </h2>
-              {isUnlocked && lvl.id < unlockedLevels.length && (
-  <p className="text-green-400 text-sm mt-2 drop-shadow-[0_0_8px_#22c55e]">
-    ✔ Completed
-  </p>
-)}
 
+              {/* ✅ Completed Badge */}
+              {isCompleted && (
+                <p className="text-green-400 text-sm mt-2 drop-shadow-[0_0_8px_#22c55e]">
+                  ✔ Completed
+                </p>
+              )}
+
+              {/* Status */}
               {!isUnlocked && (
                 <p className="text-sm text-gray-500 mt-2">🔒 Locked</p>
               )}

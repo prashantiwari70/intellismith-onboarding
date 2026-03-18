@@ -133,65 +133,90 @@ export default function App() {
       )}
 
       {screen === "level1" && (
-        <Level1 user={user} onNext={() => setScreen("scenario")} />
-      )}
+  <Level1 user={user} onNext={() => setScreen("scenario")} />
+)}
 
-      {screen === "scenario" && (
-        <ScenarioPage
-          user={user}
-          onComplete={(earnedXP) => {
-            setXp((prev) => prev + earnedXP);
-            setScreen("match");
-          }}
-        />
-      )}
+{screen === "scenario" && (
+  <ScenarioPage
+    user={user}
+    onComplete={(earnedXP) => {
+      setXp((prev) => prev + earnedXP);
+      setScreen("match");
+    }}
+  />
+)}
 
-      {screen === "match" && (
-        <MatchGamePage
-          onComplete={(earnedXP) => {
-            setXp((prev) => prev + earnedXP);
-            setUnlockedLevels((prev) => [...prev, 2]);
-            setScreen("mission");
-          }}
-        />
-      )}
+{screen === "match" && (
+  <MatchGamePage
+    onComplete={(earnedXP) => {
+      setXp((prev) => prev + earnedXP);
 
-      {screen === "level2" && (
-        <Level2
-          onNext={() => {
-            setUnlockedLevels((prev) => [...prev, 3]);
-            setScreen("mission");
-          }}
-        />
-      )}
+      // ✅ FIXED (no duplicates, reliable)
+      setUnlockedLevels((prev) => {
+        const updated = new Set(prev);
+        updated.add(2);
+        return Array.from(updated);
+      });
+
+      setScreen("mission");
+    }}
+  />
+)}
+
+{screen === "level2" && (
+  <Level2
+    onNext={() => {
+      // ✅ FIXED
+      setUnlockedLevels((prev) => {
+        const updated = new Set(prev);
+        updated.add(3);
+        return Array.from(updated);
+      });
+
+      setScreen("mission");
+    }}
+  />
+)}
 
       {screen === "level3" && (
-        <Level3
-          onNext={() => {
-            setUnlockedLevels((prev) => [...prev, 4]);
-            setScreen("mission");
-          }}
-        />
-      )}
+  <Level3
+    onNext={() => {
+      setUnlockedLevels((prev) => {
+        const updated = new Set(prev);
+        updated.add(4);
+        return Array.from(updated);
+      });
+
+      setScreen("mission");
+    }}
+  />
+)}
 
       {screen === "quiz" && (
-        <QuizPage
-          onComplete={(quizScore) => {
-            setXp((prev) => {
-              const finalScore = prev + quizScore;
+  <QuizPage
+    onComplete={(quizScore) => {
+      setXp((prev) => {
+        const finalScore = prev + quizScore;
 
-              // ✅ SCORM SAVE
-              setScore(finalScore);
-              setStatus("completed");
-              commitSCORM();
+        // ✅ SCORM
+        setScore(finalScore);
+        setStatus("completed");
+        commitSCORM();
 
-              return finalScore;
-            });
+        return finalScore;
+      });
 
-            setScreen("result");
-          }}
-        />
-      )}
+      // ✅ MARK LEVEL 4 COMPLETED (VERY IMPORTANT)
+      setUnlockedLevels((prev) => {
+        const updated = new Set(prev);
+        updated.add(4);
+        return Array.from(updated);
+      });
+
+      setScreen("result");
+    }}
+  />
+)}
 
       {screen === "result" && (
         <Result
