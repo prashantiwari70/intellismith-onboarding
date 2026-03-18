@@ -34,6 +34,14 @@ export default function App() {
   useEffect(() => {
   const saved = JSON.parse(localStorage.getItem("progress"));
 
+  const isFresh = !sessionStorage.getItem("visited");
+
+  if (isFresh) {
+    localStorage.removeItem("progress"); // reset on refresh
+  }
+
+  sessionStorage.setItem("visited", "true");
+
   // ✅ Only resume if explicitly allowed
   if (saved && saved.user) {
     setUser(saved.user);

@@ -65,7 +65,7 @@ export default function Result({ xp, user, onRestart }) {
       <button
   onClick={() => {
     playSuccess(); // 🎉 play sound
-    localStorage.removeItem("progress"); // ✅ clear progress
+     // ✅ clear progress
     onRestart();
   }}
   className="mt-8 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full hover:scale-105 transition"
