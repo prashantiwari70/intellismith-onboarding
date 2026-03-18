@@ -32,15 +32,17 @@ export default function App() {
 
   // ✅ LOAD FROM LOCAL STORAGE
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("progress"));
+  const saved = JSON.parse(localStorage.getItem("progress"));
 
-    if (saved) {
-      setScreen(saved.screen);
-      setXp(saved.xp);
-      setUser(saved.user);
-      setUnlockedLevels(saved.unlockedLevels || [1]);
-    }
-  }, []);
+  // ✅ Only resume if explicitly allowed
+  if (saved && saved.user) {
+    setUser(saved.user);
+    setXp(saved.xp || 0);
+    setUnlockedLevels(saved.unlockedLevels || [1]);
+
+    
+  }
+}, []);
 
   // ✅ GLOBAL CLICK SOUND (SMART)
   useEffect(() => {
