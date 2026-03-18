@@ -1,16 +1,122 @@
-# React + Vite
+🚀 Intellismith Onboarding Experience
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive, gamified onboarding web application built using React.
+This project simulates a real-world induction journey with levels, challenges, and progress tracking.
 
-Currently, two official plugins are available:
+🌐 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+👉 https://intellismith-onboarding-kappa.vercel.app
 
-## React Compiler
+🎯 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🎮 Gamified onboarding experience
 
-## Expanding the ESLint configuration
+🧠 Scenario-based decision making
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🧩 Matching game (company values)
+
+❓ Quiz-based evaluation
+
+📊 XP tracking and progress system
+
+🏆 Final result with certification badge
+
+🔊 Sound effects for interactions
+
+💾 Progress saved using Local Storage
+
+🔄 Auto reset on page refresh
+
+🧱 Tech Stack
+
+⚛️ React (Vite)
+
+🎨 Tailwind CSS
+
+🎞️ Framer Motion (animations)
+
+🔊 Audio API
+
+📦 SCORM integration (LMS support)
+
+🗂️ Project Structure
+src/
+ ├── components/
+ ├── pages/
+ ├── utils/
+ ├── scorm/
+ ├── App.jsx
+ └── main.jsx
+⚙️ Installation & Setup
+
+Clone the repository:
+
+git clone https://github.com/prashantiwari70/intellismith-onboarding.git
+cd intellismith-onboarding
+
+Install dependencies:
+
+npm install
+
+Run locally:
+
+npm run dev
+🚀 Deployment
+
+This project is deployed on Vercel.
+
+Steps:
+
+Push code to GitHub
+
+Import repo into Vercel
+
+Select Vite preset
+
+Click Deploy
+
+📚 SCORM Support
+
+SCORM 1.2 compliant
+
+Tracks:
+
+Score
+
+Completion status
+
+Progress (suspend data)
+
+🎮 User Flow
+
+Enter name → Start Journey
+
+Complete Levels:
+
+Level 1: Introduction
+
+Level 2: Scenario
+
+Level 3: Match Game
+
+Level 4: Quiz
+
+View final result
+
+Return to Mission Control
+
+👨‍💻 Author
+
+Prashant Tiwari
+
+BTech CSE (2025)
+
+Frontend Developer
+
+Skilled in MERN Stack & Java (DSA)
+
+⭐ Note
+
+Refreshing the page resets the entire journey
+
+Progress is maintained only during active session
