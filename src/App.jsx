@@ -224,7 +224,12 @@ export default function App() {
         <Result
           xp={xp}
           user={user}
-          onRestart={() => setScreen("mission")}
+          onRestart={() => {
+            setXp(0);
+            setUser("");
+            setUnlockedLevels([1]);
+            setScreen("landing");}
+          }
         />
       )}
     </>
