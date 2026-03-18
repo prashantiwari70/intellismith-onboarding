@@ -32,26 +32,32 @@ export default function App() {
 
   // ✅ LOAD FROM LOCAL STORAGE
   useEffect(() => {
-const saved = JSON.parse(localstorage.getItem("progress"));
-//If page is refreshed reset everything
-const isReload =
-    window.performance
-      .getEntriesByType("navigation")[0]
-      ?.type === "reload";
-if (isReload) {
-localstorage.removeItem("progress");
-setScreen("landing");
-setxp(0);
-setUser("");
-setUnlockedLevels([1]);
-return;
-}
-//Normal flow (same session)
-if (saved && saved.user) {
-setUser(saved.user);
-setXp(saved.xp || 0);
-setUnlockedLevels (saved.unlockedLevels || [1]);
-}
+  if (typeof window === "undefined") return;
+
+  const isFreshLoad = !sessionStorage.getItem("visited");
+
+  if (isFreshLoad) {
+    // first load OR refresh → reset
+    localStorage.removeItem("progress");
+
+    setScreen("landing");
+    setXp(0);
+    setUser("");
+    setUnlockedLevels([1]);
+
+    sessionStorage.setItem("visited", "true");
+    return;
+  }
+
+  // normal navigation (Result → Mission Control)
+  const raw = localStorage.getItem("progress");
+  const saved = raw ? JSON.parse(raw) : null;
+
+  if (saved && saved.user) {
+    setUser(saved.user);
+    setXp(saved.xp || 0);
+    setUnlockedLevels(saved.unlockedLevels || [1]);
+  }
 }, []);
 
   // ✅ GLOBAL CLICK SOUND (SMART)
